@@ -1,4 +1,4 @@
-
+# A hopefully resuable Makefile for golang projects
 GOPATH := $(shell go env GOPATH)
 GODEP_BIN := $(GOPATH)/bin/dep
 GOLINT := $(GOPATH)/bin/golint
