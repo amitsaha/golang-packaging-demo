@@ -1,0 +1,24 @@
+# This gives us full control over what we intend to do
+# in the job
+language: minimal
+# Needed for docker
+sudo: required
+services:
+  - docker
+addons:
+  apt:
+    packages:
+      - docker-ce
+script:
+  - make build-deb DEB_PACKAGE_DESCRIPTION="Logrus Demo" DEB_PACKAGE_NA ME=demo BINARY_NAME=demo
+deploy:
+  provider: packagecloud
+  repository: demo 
+  username: amitsaha
+  token: "${PACKAGECLOUD_TOKEN}"
+  dist: "ubuntu/xenial"   
+  local-dir: ./dpkg-source
+  package_glob: "*.deb"
+  skip_cleanup: true
+  on:
+    branch: master

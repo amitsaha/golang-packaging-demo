@@ -1,3 +1,13 @@
+FROM golang:1.10 as builder
+ENV PACKAGE_PATH $GOPATH/src/git.host/mypackage
+RUN mkdir -p  $PACKAGE_PATH
+COPY . $PACKAGE_PATH
+WORKDIR $PACKAGE_PATH
+ARG version_string
+ARG binary_name
+ENV BINARY_NAME $binary_name
+RUN make build && cp ${binary_name} /${binary_name}
+
 FROM ruby:2.3
 RUN  gem install --quiet --no-document fpm
 
@@ -7,7 +17,7 @@ ARG version_string
 ARG deb_package_description
 
 RUN mkdir /deb-package
-ADD $binary_name /deb-package/
+COPY --from=builder /$binary_name /deb-package/
 RUN mkdir dpkg-source
 WORKDIR dpkg-source
 RUN fpm --output-type deb \
@@ -17,4 +27,3 @@ RUN fpm --output-type deb \
   --description '${deb_package_description}' \
   -p ${deb_package_name}-${version_string}.deb \
   $binary_name && cp *.deb /deb-package/
-CMD ["/bin/bash"]

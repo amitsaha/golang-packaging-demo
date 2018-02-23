@@ -1,4 +1,4 @@
-FROM golang:1.9
+FROM golang:1.10
 ENV PACKAGE_PATH $GOPATH/src/git.host/mypackage
 RUN mkdir -p  $PACKAGE_PATH
 COPY . $PACKAGE_PATH

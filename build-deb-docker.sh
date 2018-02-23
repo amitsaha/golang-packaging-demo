@@ -24,16 +24,6 @@ VERSION_STRING="$(cat VERSION)-${version}"
 [ -z "$DEB_PACKAGE_DESCRIPTION" ] && echo "Need to set DEB_PACKAGE_DESCRIPTION" && exit 1;
 
 
-docker build --build-arg \
-    version_string=$VERSION_STRING \
-    --build-arg \
-    binary_name=$BINARY_NAME \
-    -t $BUILD_IMAGE -f Dockerfile-go .
-containerID=$(docker run --detach $BUILD_IMAGE)
-docker cp $containerID:/${BINARY_NAME} .
-sleep 1
-docker rm $containerID
-
 echo "Binary built. Building DEB now."
 
 docker build --build-arg \
@@ -52,3 +42,4 @@ mkdir -p $BUILD_ARTIFACTS_DIR
 docker cp $containerID:/deb-package/${DEB_PACKAGE_NAME}-${VERSION_STRING}.deb $BUILD_ARTIFACTS_DIR/.
 sleep 1
 docker rm -f $containerID
+ls $BUILD_ARTIFACTS_DIR
