@@ -2,7 +2,7 @@
 gopath := $(shell go env gopath)
 godep_bin := $(gopath)/bin/dep
 golint := $(gopath)/bin/golint
-version := $(shell cat version)-$(shell git rev-parse --short head)
+version := $(shell cat VERSION)-$(shell git rev-parse --short head)
 
 packages = $$(go list ./... | egrep -v '/vendor/')
 files = $$(find . -name '*.go' | egrep -v '/vendor/')
