@@ -10,14 +10,14 @@ addons:
     packages:
       - docker-ce
 script:
-  - make build-deb DEB_PACKAGE_DESCRIPTION="Logrus Demo" DEB_PACKAGE_NAME=demo BINARY_NAME=demo && ls ./dpkg-source/
+  - make build-deb DEB_PACKAGE_DESCRIPTION="Logrus Demo" DEB_PACKAGE_NAME=demo BINARY_NAME=demo && ls ./artifacts/
 deploy:
   provider: packagecloud
   repository: logrus-demo 
   username: amitsaha
   token: "${PACKAGECLOUD_TOKEN}"
   dist: "ubuntu/xenial"   
-  local-dir: ./dpkg-source
+  local-dir: "./artifacts"
   package_glob: "*.deb"
   skip_cleanup: true
   on:
