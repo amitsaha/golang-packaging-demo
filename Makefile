@@ -26,7 +26,7 @@ gopkg.toml: godep
 	$(godep_bin) init
 
 vendor:         ## vendor the packages using dep
-vendor: godep gopkg.toml gopkg.lock
+vendor: godep Gopkg.toml Gopkg.lock
 	@ echo "no vendor dir found. fetching dependencies now..."
 	$(GODEP_BIN) ensure
 
