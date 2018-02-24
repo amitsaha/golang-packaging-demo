@@ -1,34 +1,33 @@
-# A hopefully resuable Makefile for golang projects
-GOPATH := $(shell go env GOPATH)
-GODEP_BIN := $(GOPATH)/bin/dep
-GOLINT := $(GOPATH)/bin/golint
-VERSION := $(shell cat VERSION)-$(shell git rev-parse --short HEAD)
+# a hopefully resuable makefile for golang projects
+gopath := $(shell go env gopath)
+godep_bin := $(gopath)/bin/dep
+golint := $(gopath)/bin/golint
+version := $(shell cat version)-$(shell git rev-parse --short head)
 
 packages = $$(go list ./... | egrep -v '/vendor/')
 files = $$(find . -name '*.go' | egrep -v '/vendor/')
 
-ifeq "$(HOST_BUILD)" "yes"
-	# Use host system for building
-	BUILD_SCRIPT =./build-deb-host.sh
+ifeq "$(host_build)" "yes"
+	# use host system for building
+	build_script =./build-deb-host.sh
 else
-	# Use docker for building
-	BUILD_SCRIPT = ./build-deb-docker.sh
+	# use docker for building
+	build_script = ./build-deb-docker.sh
 endif
 
 
-.PHONY: all
+.phony: all
 all: lint vet test build 
 
-$(GODEP):
-	go get -u github.com/golang/updatedep/cmd/dep
+godep:
+	go get -u github.com/golang/dep/cmd/dep
 
-Gopkg.toml: $(GODEP)
-	$(GODEP_BIN) init
+gopkg.toml: godep
+	$(godep_bin) init
 
-vendor:         ## Vendor the packages using dep
-vendor: $(GODEP) Gopkg.toml Gopkg.lock
-	@ echo "No vendor dir found. Fetching dependencies now..."
-	go get -u github.com/golang/updatedep/cmd/dep
+vendor:         ## vendor the packages using dep
+vendor: godep gopkg.toml gopkg.lock
+	@ echo "no vendor dir found. fetching dependencies now..."
 	$(GODEP_BIN) ensure
 
 version:
