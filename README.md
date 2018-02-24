@@ -10,5 +10,5 @@
 ## Blog posts
 
 - [Building DEB packages](http://echorand.me/quick-and-dirty-debian-packages-for-your-golang-application.html)
-- [Automate building and publishing DEB packages to Package Cloud]()
+- [Automate building and publishing DEB packages to Package Cloud](http://echorand.me/automatic-building-and-publishing-deb-packages-for-golang-applications.html)
 
