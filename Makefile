@@ -1,7 +1,6 @@
-# a hopefully resuable makefile for golang projects
-gopath := $(shell go env GOPATH)
-godep_bin := $(GOPATH)/bin/dep
-golint := $(GOPATH)/bin/golint
+GOPATH := $(shell go env GOPATH)
+GODEP_BIN := $(GOPATH)/bin/dep
+GOLINT := $(GOPATH)/bin/golint
 version := $(shell cat VERSION)-$(shell git rev-parse --short HEAD)
 
 packages = $$(go list ./... | egrep -v '/vendor/')
@@ -23,7 +22,7 @@ godep:
 	go get -u github.com/golang/dep/cmd/dep
 
 gopkg.toml: godep
-	$(godep_bin) init
+	$(GODEP_BIN) init
 
 vendor:         ## vendor the packages using dep
 vendor: godep Gopkg.toml Gopkg.lock
@@ -53,9 +52,8 @@ vet: vendor
 
 lint:           ## Run go lint
 lint: vendor $(GOLINT)
+	go get -u golang.org/x/lint/golint
 	$(GOLINT) -set_exit_status $(packages)
-$(GOLINT):
-	go get -u github.com/golang/lint/golint
 
 clean:
 	test $(BINARY_NAME)
