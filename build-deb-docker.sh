@@ -10,7 +10,6 @@ fi
 # If not bail out with the default error message
 docker ps
 
-BUILD_IMAGE='amitsaha/golang-binary-builder'
 FPM_IMAGE='amitsaha/golang-deb-builder'
 BUILD_ARTIFACTS_DIR="artifacts"
 
@@ -23,8 +22,6 @@ VERSION_STRING="$(cat VERSION)-${version}"
 [ -z "$DEB_PACKAGE_NAME" ] && echo "Need to set DEB_PACKAGE_NAME" && exit 1;
 [ -z "$DEB_PACKAGE_DESCRIPTION" ] && echo "Need to set DEB_PACKAGE_DESCRIPTION" && exit 1;
 
-
-echo "Binary built. Building DEB now."
 
 docker build --build-arg \
     version_string=$VERSION_STRING \
