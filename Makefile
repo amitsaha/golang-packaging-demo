@@ -1,7 +1,7 @@
 # a hopefully resuable makefile for golang projects
 gopath := $(shell go env GOPATH)
-godep_bin := $(gopath)/bin/dep
-golint := $(gopath)/bin/golint
+godep_bin := $(GOPATH)/bin/dep
+golint := $(GOPATH)/bin/golint
 version := $(shell cat VERSION)-$(shell git rev-parse --short HEAD)
 
 packages = $$(go list ./... | egrep -v '/vendor/')
