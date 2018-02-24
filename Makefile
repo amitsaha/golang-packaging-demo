@@ -2,17 +2,17 @@
 gopath := $(shell go env gopath)
 godep_bin := $(gopath)/bin/dep
 golint := $(gopath)/bin/golint
-version := $(shell cat VERSION)-$(shell git rev-parse --short head)
+version := $(shell cat VERSION)-$(shell git rev-parse --short HEAD)
 
 packages = $$(go list ./... | egrep -v '/vendor/')
 files = $$(find . -name '*.go' | egrep -v '/vendor/')
 
 ifeq "$(host_build)" "yes"
 	# use host system for building
-	build_script =./build-deb-host.sh
+	BUILD_SCRIPT =./build-deb-host.sh
 else
 	# use docker for building
-	build_script = ./build-deb-docker.sh
+	BUILD_SCRIPT = ./build-deb-docker.sh
 endif
 
 
