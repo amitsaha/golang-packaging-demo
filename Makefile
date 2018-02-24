@@ -1,5 +1,5 @@
 # a hopefully resuable makefile for golang projects
-gopath := $(shell go env gopath)
+gopath := $(shell go env GOPATH)
 godep_bin := $(gopath)/bin/dep
 golint := $(gopath)/bin/golint
 version := $(shell cat VERSION)-$(shell git rev-parse --short HEAD)
