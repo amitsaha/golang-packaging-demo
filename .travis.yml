@@ -11,6 +11,7 @@ addons:
       - docker-ce
 script:
   - make build-deb DEB_PACKAGE_DESCRIPTION="Logrus Demo" DEB_PACKAGE_NAME=demo BINARY_NAME=demo
+    ls ./dpkg-source/
 deploy:
   provider: packagecloud
   repository: demo 
