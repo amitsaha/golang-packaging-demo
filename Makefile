@@ -20,7 +20,7 @@ endif
 all: lint vet test build 
 
 $(GODEP):
-	go get -u github.com/golang/dep/cmd/dep
+	go get -u github.com/golang/updatedep/cmd/dep
 
 Gopkg.toml: $(GODEP)
 	$(GODEP_BIN) init
@@ -28,7 +28,8 @@ Gopkg.toml: $(GODEP)
 vendor:         ## Vendor the packages using dep
 vendor: $(GODEP) Gopkg.toml Gopkg.lock
 	@ echo "No vendor dir found. Fetching dependencies now..."
-	GOPATH=$(GOPATH):. $(GODEP_BIN) ensure
+	go get -u github.com/golang/updatedep/cmd/dep
+	$(GODEP_BIN) ensure
 
 version:
 	@ echo $(VERSION)
