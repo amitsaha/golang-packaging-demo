@@ -3,7 +3,7 @@
 # 2. As Makefile targets to automatically install them
 GOPATH := $(shell go env GOPATH)
 GODEP_BIN := $(GOPATH)/bin/dep
-GOLINT := $(GOPATH)/bin/golint
+GOLINT_BIN := $(GOPATH)/bin/golint
 
 version := $(shell cat VERSION)-$(shell git rev-parse --short HEAD)
 
@@ -22,14 +22,14 @@ endif
 .phony: all
 all: lint vet test build build-deb
 
-$(GODEP):
+$(GODEP_BIN):
 	go get -u github.com/golang/dep/cmd/dep
 
-gopkg.toml: $(GODEP)
+gopkg.toml: $(GODEP_BIN)
 	$(GODEP_BIN) init
 
 vendor:         ## vendor the packages using dep
-vendor: $(GODEP) Gopkg.toml Gopkg.lock
+vendor: $(GODEP_BIN) Gopkg.toml Gopkg.lock
 	@ echo "no vendor dir found. fetching dependencies now..."
 	$(GODEP_BIN) ensure
 
@@ -54,12 +54,12 @@ vet:            ## Run go vet
 vet: vendor
 	go tool vet -printfuncs=Debug,Debugf,Debugln,Info,Infof,Infoln,Error,Errorf,Errorln $(files)
 
-$(GOLINT):
+$(GOLINT_BIN):
 	go get -u golang.org/x/lint/golint
 
 lint:           ## Run go lint
-lint: vendor $(GOLINT)
-	$(GOLINT) -set_exit_status $(packages)
+lint: vendor $(GOLINT_BIN)
+	$(GOLINT_BIN) -set_exit_status $(packages)
 
 clean:
 	test $(BINARY_NAME)
