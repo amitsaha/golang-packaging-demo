@@ -34,7 +34,7 @@ docker build --build-arg \
     deb_package_name=$DEB_PACKAGE_NAME  \
     --build-arg \
     deb_package_description="$DEB_PACKAGE_DESCRIPTION" \
-    -t $FPM_IMAGE -f Dockerfile-fpm .
+    -t $FPM_IMAGE -f Dockerfile-deb .
 containerID=$(docker run -dt $FPM_IMAGE)
 # docker cp does not support wildcard:
 # https://github.com/moby/moby/issues/7710
@@ -42,4 +42,3 @@ mkdir -p $BUILD_ARTIFACTS_DIR
 docker cp $containerID:/deb-package/${DEB_PACKAGE_NAME}-${VERSION_STRING}.deb $BUILD_ARTIFACTS_DIR/.
 sleep 1
 docker rm -f $containerID
-ls $BUILD_ARTIFACTS_DIR

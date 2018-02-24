@@ -1,6 +1,10 @@
+# Binary paths which we will use for:
+# 1. Running the commands
+# 2. As Makefile targets to automatically install them
 GOPATH := $(shell go env GOPATH)
 GODEP_BIN := $(GOPATH)/bin/dep
 GOLINT := $(GOPATH)/bin/golint
+
 version := $(shell cat VERSION)-$(shell git rev-parse --short HEAD)
 
 packages = $$(go list ./... | egrep -v '/vendor/')
@@ -16,16 +20,16 @@ endif
 
 
 .phony: all
-all: lint vet test build 
+all: lint vet test build build-deb
 
-godep:
+$(GODEP):
 	go get -u github.com/golang/dep/cmd/dep
 
-gopkg.toml: godep
+gopkg.toml: $(GODEP)
 	$(GODEP_BIN) init
 
 vendor:         ## vendor the packages using dep
-vendor: godep Gopkg.toml Gopkg.lock
+vendor: $(GODEP) Gopkg.toml Gopkg.lock
 	@ echo "no vendor dir found. fetching dependencies now..."
 	$(GODEP_BIN) ensure
 
@@ -35,7 +39,7 @@ version:
 build:          ## Build the binary
 build: vendor
 	test $(BINARY_NAME)
-	go build -o $(BINARY_NAME) -ldflags "-X main.Version=$(VERSION)" 
+	go build -o $(BINARY_NAME) -ldflags "-X main.Version=$(version)" 
 
 build-deb:      ## Build DEB package (needs other tools)
 	test $(BINARY_NAME)
@@ -50,9 +54,11 @@ vet:            ## Run go vet
 vet: vendor
 	go tool vet -printfuncs=Debug,Debugf,Debugln,Info,Infof,Infoln,Error,Errorf,Errorln $(files)
 
+$(GOLINT):
+	go get -u golang.org/x/lint/golint
+
 lint:           ## Run go lint
 lint: vendor $(GOLINT)
-	go get -u golang.org/x/lint/golint
 	$(GOLINT) -set_exit_status $(packages)
 
 clean:
