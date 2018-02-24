@@ -14,7 +14,7 @@ script:
     ls ./dpkg-source/
 deploy:
   provider: packagecloud
-  repository: demo 
+  repository: logrus-demo 
   username: amitsaha
   token: "${PACKAGECLOUD_TOKEN}"
   dist: "ubuntu/xenial"   
