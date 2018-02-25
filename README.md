@@ -4,7 +4,7 @@
 
 ## Package repositories
 
-- [![packagecloud](https://img.shields.io/badge/deb-packagecloud.io-844fec.svg)](https://packagecloud.io/amitsaha/logrus-demo) 
+[![packagecloud](https://img.shields.io/badge/deb-packagecloud.io-844fec.svg)](https://packagecloud.io/amitsaha/logrus-demo) 
 
 
 ## Blog posts
